@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.app.rquispe.domain">
+
+    <class name="Event" table="EVENTS">
+        <id name="id" column="EVENT_ID">
+            <generator class="native"/>
+        </id>
+        <property name="date" type="timestamp" column="EVENT_DATE"/>
+        <property name="title"/>
+
+        <!--inverse: it means which side is responsible to take care of the relationship.
+        In Hibernate, only the “relationship owner” should maintain the relationship, and
+         the “inverse” keyword is created to defines which side is the owner to maintain the relationship.
+         In short, inverse=”true” means this is the relationship owner, and inverse=”false” (default) means it’s not.
+
+         all bi-directional associations need one side as inverse. In a one-to-many association it has to be
+          the many-side, and in many-to-many association you can select either side.
+        -->
+        <set name="participants" table="PERSON_EVENT" inverse="true">
+            <key column="EVENT_ID"/>
+            <many-to-many column="PERSON_ID" class="Person"/>
+        </set>
+    </class>
+
+</hibernate-mapping>
