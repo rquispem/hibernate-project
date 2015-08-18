@@ -13,6 +13,7 @@ public class Employee {
     public Employee() {
     }
 
+    //@EmbeddedId
     @Id @GeneratedValue(strategy = GenerationType.AUTO)//GenerationType.AUTO hibernate makes a decision what to use
     //GenerationType.Identity hibernate will use identity columns a feature of the database.
     // GenerationType.Sequence use sequence object, GenerationType.Table you can have a separate table in order
@@ -38,6 +39,18 @@ public class Employee {
 
     @Lob  //a large object more than 255 characteres
     private String descriptio;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "street", column = @Column(name = "HOME_STREET_NAME")),
+        @AttributeOverride(name = "city", column = @Column(name = "HOME_CITY_NAME")),
+        @AttributeOverride(name = "state", column = @Column(name = "HOME_STATE_NAME")),
+        @AttributeOverride(name = "pincode", column = @Column(name = "HOME_PINCODE_NAME"))
+    })
+    private Address homeAddress;
+
+    @Embedded
+    private Address officeAddress;
 
     public Date getJoinDate() {
         return joinDate;
