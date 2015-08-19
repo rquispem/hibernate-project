@@ -3,7 +3,6 @@ import com.app.rquispe.domain.Employee;
 import com.app.rquispe.domain.Project;
 import com.app.rquispe.domain.Vehicle;
 import com.app.rquispe.utils.HibernateUtil;
-import com.app.rquispe.utils.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -43,11 +42,18 @@ public class Main {
 
         Project project1 = new Project();
         project1.setName("Baynote");
-        project1.setDescription("Image server project");
+        project1.setProjectDescription("Image server project");
+
+
 
         Project project2 = new Project();
         project2.setName("AOL");
-        project2.setDescription("Excel project");
+        project2.setProjectDescription("Excel project");
+
+        //for reverse mapping
+        project1.setEmployee(employee);
+        project2.setEmployee(employee);
+
 
         employee.getProjects().add(project1);
         employee.getProjects().add(project2);

@@ -1,8 +1,6 @@
 package com.app.rquispe.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by ruben on 8/18/15.
@@ -10,10 +8,17 @@ import javax.persistence.Id;
 @Entity
 public class Project {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int projectId;
+    @Column
     private String name;
-    private String description;
+    @Column
+    private String projectDescription;
+
+    //reverse relationShip
+    @ManyToOne
+    @JoinColumn(name = "EMPLOYEE_ID") //give a name for the column mapped
+    private Employee employee;
 
     public int getProjectId() {
         return projectId;
@@ -31,11 +36,19 @@ public class Project {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getProjectDescription() {
+        return projectDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setProjectDescription(String description) {
+        this.projectDescription = description;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }

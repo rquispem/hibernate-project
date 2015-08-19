@@ -48,7 +48,9 @@ public class Employee {
     @JoinColumn(name = "VEHICLE_ID")
     private Vehicle vehicle;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee")  //to avoid creating another table we mapped with the entity but we need to remove join anotation here
+    /*@JoinTable(name = "USER_PROJECT", joinColumns = @JoinColumn(name = "USER_ID"), //koinColumn is the id of this entity
+    inverseJoinColumns = @JoinColumn(name = "PROJECT_ID")) */ //is the id  of the project entity
     private Set<Project> projects = new HashSet<>();
 
     //mark this collection to be persistent by hibernate creates a table called Employee_listOfAddresses
