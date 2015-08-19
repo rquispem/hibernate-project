@@ -16,6 +16,15 @@ import java.util.List;
  */
 public class HibernateMain {
 
+    /*Implementing a Naming Strategy
+     *org.hibernate.cfg.NamingStrategy and org.hibernate.cfg.naming.NamingStrategyDelegator interfaces allow you
+     * to specify a "naming standard" for database objects and schema elements.
+     * You can provide rules for automatically generating database identifiers from Java identifiers or for processing
+     * "logical" column and table names given in the mapping file into "physical" table and column names. This feature
+     * helps reduce the verbosity of the mapping document, eliminating repetitive noise (TBL_ prefixes, for example).
+     * The default strategy used by Hibernate is quite minimal.
+     * new Configuration().setNamingStrategyDelegator(ImprovedNamingStrategyDelegator.DEFAULT_INSTANCE)
+     */
     public static void main(String[] args) {
 
         Configuration configuration = HibernateUtil.getConfiguration();

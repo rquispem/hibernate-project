@@ -10,11 +10,11 @@ import java.util.*;
 /**
  * Created by ruben on 8/14/15.
  */
-@Entity(name = "T_EMPLOYEE") //creates the table with the name T_EMPLOYEE AND ALSO CHANGE THE NAME OF THE ENTITY
-@Table(name = "EMPLOYEE") //ONLY CREATES THE NAME OF THE TABLE
-public class Employee {
+//@Entity(name = "T_EMPLOYEE") //creates the table with the name T_EMPLOYEE AND ALSO CHANGE THE NAME OF THE ENTITY
+//@Table(name = "EMPLOYEE") //ONLY CREATES THE NAME OF THE TABLE
+public class Employee2 {
 
-    public Employee() {
+    public Employee2() {
     }
 
     //@EmbeddedId
@@ -42,36 +42,41 @@ public class Employee {
     private Date joinDate;
 
     @Lob  //a large object more than 255 characteres
-    private String description;
+    private String descriptio;
 
-    @OneToOne
-    @JoinColumn(name = "VEHICLE_ID")
-    private Vehicle vehicle;
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "street", column = @Column(name = "HOME_STREET_NAME")),
+        @AttributeOverride(name = "city", column = @Column(name = "HOME_CITY_NAME")),
+        @AttributeOverride(name = "state", column = @Column(name = "HOME_STATE_NAME")),
+        @AttributeOverride(name = "pincode", column = @Column(name = "HOME_PINCODE_NAME"))
+    })
+    private Address homeAddress;
 
-    @OneToMany
-    private Set<Project> projects = new HashSet<>();
+    @Embedded
+    private Address officeAddress;
 
     //mark this collection to be persistent by hibernate creates a table called Employee_listOfAddresses
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     //Avoid the default name of the table
-    //Address is not an entity is a value type
-    @JoinTable(name = "EMPLOYEE_ADDRESS",
-                joinColumns = @JoinColumn(name = "EMPLOYEE_ID")) //change de name of de id(FK) column in this table
-    private Collection<Address> listOfAddresses = new ArrayList<>();
+    @JoinTable(name = "USER_ADDRESS",
+                joinColumns = @JoinColumn(name = "USER_ID")) //change de name of de id(FK) column in this table
+    private Set<Address> listOfAddresses = new HashSet<>();
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    @ElementCollection
+    @JoinTable(name = "USER_ADDRESS",
+            joinColumns = @JoinColumn(name = "USER_ID")) //change de name of de id(FK) column in this table
+    @GenericGenerator(name = "hilo-gen", strategy = "hilo")
+    @CollectionId(columns = {@Column(name = "ADRESS_ID")}, generator = "hilo-gen", type = @Type(type = "long"))
+    private Collection<Address> listOfAddresses2 = new ArrayList<>(); //to create a primary key for address
 
-    public Collection<Address> getListOfAddresses() {
+
+    public Set<Address> getListOfAddresses() {
         return listOfAddresses;
     }
 
-    public void setListOfAddresses(Collection<Address> listOfAddresses) {
+    public void setListOfAddresses(Set<Address> listOfAddresses) {
         this.listOfAddresses = listOfAddresses;
     }
 
@@ -121,21 +126,5 @@ public class Employee {
 
     public void setSalary(double salary) {
         this.salary = salary;
-    }
-
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
-    public Set<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(Set<Project> projects) {
-        this.projects = projects;
     }
 }
